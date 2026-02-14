@@ -62,7 +62,7 @@ Flow:
 [FR3: When User mode is chosen, provide a menu to Log Workout or View Stats](https://github.com/wfresch/CS690-FitnessTracker/issues/4)\
 [FR4: When Log Workout is chosen, provide a menu to select type of Workout: Movement or Weightlifting](https://github.com/wfresch/CS690-FitnessTracker/issues/5)\
 [FR5: When Movement workout type is chosen, provide a menu to select a subtype: Run, Walk, Bike, and more](https://github.com/wfresch/CS690-FitnessTracker/issues/6)\
-[FR6: For any Movement type workout, prompt user for the following information](https://github.com/wfresch/CS690-FitnessTracker/issues/7):\
+[FR6: For any Movement type workout, prompt user for the following information](https://github.com/wfresch/CS690-FitnessTracker/issues/7):
 * Distance units (Miles or Kilometers)
 * Distance quantity (numeric decimal, greater than zero, less than 1000)
 * Time units (Minutes or Hours)
@@ -86,19 +86,19 @@ Flow:
 10. User inputs number of reps
 11. System stores this data
 
-FR1: Provide a Main menu allowing users to choose User or Admin mode\
-FR2: For User mode, provide a menu to choose User\
-NFR1: If no users exist, provide a message asking user to first create a User in Admin mode\
-FR3: When User mode is chosen, provide a menu to Log Workout or View Stats\
-FR4: When Log Workout is chosen, provide a menu to select type of Workout: Movement or Weightlifting\
-FR8: When Weightlifting workout type is chosen, provide a menu to select a subtype: Back Squat, Front Squat, Bench Press, and more\
-FR9: For any Weightlifting type workout, prompt user for the following information:\
+[FR1: Provide a Main menu allowing users to choose User or Admin mode](https://github.com/wfresch/CS690-FitnessTracker/issues/1)\
+[FR2: For User mode, provide a menu to choose User](https://github.com/wfresch/CS690-FitnessTracker/issues/2)\
+[NFR1: If no users exist, provide a message asking user to first create a User in Admin mode](https://github.com/wfresch/CS690-FitnessTracker/issues/3)\
+[FR3: When User mode is chosen, provide a menu to Log Workout or View Stats](https://github.com/wfresch/CS690-FitnessTracker/issues/4)\
+[FR4: When Log Workout is chosen, provide a menu to select type of Workout: Movement or Weightlifting](https://github.com/wfresch/CS690-FitnessTracker/issues/5)\
+[FR8: When Weightlifting workout type is chosen, provide a menu to select a subtype: Back Squat, Front Squat, Bench Press, and more](https://github.com/wfresch/CS690-FitnessTracker/issues/9)\
+[FR9: For any Weightlifting type workout, prompt user for the following information](https://github.com/wfresch/CS690-FitnessTracker/issues/10):
 * Weight units (Pounds or Kilograms)
 * Weight quantity (numeric decimal, greater than zero, less than 1000)
 * Number of Sets
-* Number of Reps\
+* Number of Reps
 
-FR10: The system shall store Weightlifting Workout data in a persistent way
+[FR10: The system shall store Weightlifting Workout data in a persistent way](https://github.com/wfresch/CS690-FitnessTracker/issues/11)
 
 ### Show workout data
 #### UC11: Show workout data
@@ -111,14 +111,19 @@ Flow:
 5. User chooses a timeframe
 6. System lists workouts from the given timeframe
    
-FR1: Provide a Main menu allowing users to choose User or Admin mode\
-FR2: For User mode, provide a menu to choose User\
-NFR1: If no users exist, provide a message asking user to first create a User in Admin mode\
-FR3: When User mode is chosen, provide a menu to Log Workout or View Stats\
-FR32: When View Workouts is chosen, prompt user to specify timeframe; timeframe options are Last 7 Days, Last 30 Days, Last 365 Days, Custom\
-FR33: When Custom timeframe is chosen, prompt user for start-date and stop-date\
-NFR13: When Custom timeframe is chosen, start-date must take place before stop-date, and both dates must be real (ie - no February 30, etc)\
-FR34: For the chosen timeframe, display a list of workouts.  Each workout should include: Date, Workout Category, Workout Type, Workout Details
+[FR1: Provide a Main menu allowing users to choose User or Admin mode](https://github.com/wfresch/CS690-FitnessTracker/issues/1)\
+[FR2: For User mode, provide a menu to choose User](https://github.com/wfresch/CS690-FitnessTracker/issues/2)\
+[NFR1: If no users exist, provide a message asking user to first create a User in Admin mode](https://github.com/wfresch/CS690-FitnessTracker/issues/3)\
+[FR3: When User mode is chosen, provide a menu to Log Workout or View Stats](https://github.com/wfresch/CS690-FitnessTracker/issues/4)\
+[FR32: When View Workouts is chosen, prompt user to specify timeframe; options are](https://github.com/wfresch/CS690-FitnessTracker/issues/12):
+* Last 7 Days
+* Last 30 Days
+* Last 365 Days
+* Custom
+  
+[FR33: When Custom timeframe is chosen, prompt user for start-date and stop-date](https://github.com/wfresch/CS690-FitnessTracker/issues/13)\
+[NFR13: When Custom timeframe is chosen, start-date must take place before stop-date, and both dates must be real (ie - no February 30, etc)](https://github.com/wfresch/CS690-FitnessTracker/issues/14)\
+[FR34: For the chosen timeframe, display a list of workouts.  Each workout should include: Date, Workout Category, Workout Type, Workout Details](https://github.com/wfresch/CS690-FitnessTracker/issues/15)
 
 ###	Manage Users
 #### UC3: Add a User
