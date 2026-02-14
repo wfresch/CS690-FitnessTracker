@@ -56,19 +56,19 @@ Flow:
 10. User inputs time quantity
 11. System stores this data
 
-FR1: Provide a Main menu allowing users to choose User or Admin mode\
-FR2: For User mode, provide a menu to choose User\
-NFR1: If no users exist, provide a message asking user to first create a User in Admin mode\
-FR3: When User mode is chosen, provide a menu to Log Workout or View Stats\
-FR4: When Log Workout is chosen, provide a menu to select type of Workout: Movement or Weightlifting\
-FR5: When Movement workout type is chosen, provide a menu to select a subtype: Run, Walk, Bike, and more\
-FR6: For any Movement type workout, prompt user for the following information:\
+[FR1: Provide a Main menu allowing users to choose User or Admin mode](https://github.com/wfresch/CS690-FitnessTracker/issues/1)\
+[FR2: For User mode, provide a menu to choose User](https://github.com/wfresch/CS690-FitnessTracker/issues/2)\
+[NFR1: If no users exist, provide a message asking user to first create a User in Admin mode](https://github.com/wfresch/CS690-FitnessTracker/issues/3)\
+[FR3: When User mode is chosen, provide a menu to Log Workout or View Stats](https://github.com/wfresch/CS690-FitnessTracker/issues/4)\
+[FR4: When Log Workout is chosen, provide a menu to select type of Workout: Movement or Weightlifting](https://github.com/wfresch/CS690-FitnessTracker/issues/5)\
+[FR5: When Movement workout type is chosen, provide a menu to select a subtype: Run, Walk, Bike, and more](https://github.com/wfresch/CS690-FitnessTracker/issues/6)\
+[FR6: For any Movement type workout, prompt user for the following information](https://github.com/wfresch/CS690-FitnessTracker/issues/7):\
 * Distance units (Miles or Kilometers)
 * Distance quantity (numeric decimal, greater than zero, less than 1000)
 * Time units (Minutes or Hours)
 * Time quantity (numeric decimal, greater than zero, less than 1000)
 
-FR7: The system shall store Movement Workout data in a persistent way
+[FR7: The system shall store Movement Workout data in a persistent way](https://github.com/wfresch/CS690-FitnessTracker/issues/8)
 
 ### Collect weightlifting data	
 #### UC2: Collect weightlifting data
