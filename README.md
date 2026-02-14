@@ -40,7 +40,7 @@ We create a software that tracks fitness progress in an easy manner.
 
 Use Cases are given below, and each includes related Functional (FRs) and Non-Functional Requirements (NFRs).  Note that there are several FRs and NFRs that are common among multiple Use-Cases.  This is because there are certain menus and prompts that must exist in order for multiple features to be delivered.  For instance, an Admin menu must exist before any Users or Workout types can be added or removed.
 
-### Collect movement data
+### Collect workout data
 #### UC1: Collect movement data
 Actor: User
 Flow:
@@ -70,7 +70,6 @@ Flow:
 
 [FR7: The system shall store Movement Workout data in a persistent way](https://github.com/wfresch/CS690-FitnessTracker/issues/8)
 
-### Collect weightlifting data	
 #### UC2: Collect weightlifting data
 Actor: User
 Flow:
