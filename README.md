@@ -122,8 +122,12 @@ Flow:
 * Custom
   
 [FR33: When Custom timeframe is chosen, prompt user for start-date and stop-date](https://github.com/wfresch/CS690-FitnessTracker/issues/13)\
-[NFR13: When Custom timeframe is chosen, start-date must take place before stop-date, and both dates must be real (ie - no February 30, etc)](https://github.com/wfresch/CS690-FitnessTracker/issues/14)\
-[FR34: For the chosen timeframe, display a list of workouts.  Each workout should include: Date, Workout Category, Workout Type, Workout Details](https://github.com/wfresch/CS690-FitnessTracker/issues/15)
+[NFR13: When Custom timeframe is chosen, dates must be validated)](https://github.com/wfresch/CS690-FitnessTracker/issues/14)\
+[FR34: For the chosen timeframe, display a list of workouts. Each workout should include](https://github.com/wfresch/CS690-FitnessTracker/issues/15):
+* Date
+* Workout Category
+* Workout Type
+* Workout Details
 
 ###	Manage Users
 #### UC3: Add a User
@@ -136,12 +140,12 @@ Flow:
 5. Admin inputs a User's name
 6. System stores this data
    
-FR1: Provide a Main menu allowing users to choose User or Admin mode\
-FR11: For Admin mode, provide a menu to Manage Users or Manage Workout Types\
-FR12: When Manage Users is chosen, provide a menu to Add a User or Remove a User\
-FR13: When Add a User is chosen, prompt for the User's name\
-FR14: The system shall store User data in a persistent way\
-NFR2: When adding a user with a duplicate name, prompt Admin to use a different name or cancel.\
+[FR1: Provide a Main menu allowing users to choose User or Admin mode](https://github.com/wfresch/CS690-FitnessTracker/issues/1)\
+[FR11: For Admin mode, provide a menu to Manage Users or Manage Workout Types](https://github.com/wfresch/CS690-FitnessTracker/issues/16)\
+[FR12: When Manage Users is chosen, provide a menu to Add a User or Remove a User](https://github.com/wfresch/CS690-FitnessTracker/issues/17)\
+[FR13: When Add a User is chosen, prompt for the User's name](https://github.com/wfresch/CS690-FitnessTracker/issues/18)\
+[FR14: The system shall store User data in a persistent way](https://github.com/wfresch/CS690-FitnessTracker/issues/19)\
+[NFR2: When adding a user with a duplicate name, prompt Admin to use a different name or cancel.](https://github.com/wfresch/CS690-FitnessTracker/issues/20)
 
 #### UC4: Remove a User
 Actor: Admin
@@ -154,13 +158,13 @@ Flow:
 6. Admin is prompted with a confirmation message, and confirms
 7. System removes this data
 
-FR1: Provide a Main menu allowing users to choose User or Admin mode\
-FR11: For Admin mode, provide a menu to Manage Users or Manage Workout Types\
-FR12: When Manage Users is chosen, provide a menu to Add a User or Remove a User\
-NFR3: If no users exist and Remove a User is chosen, display a message stating that no users exist.\
-FR15: When Remove a User is chosen, provide a menu of existing users\
-NFR4: Before removing a user, prompt Admin with a confirmation message (Are you sure?)\
-FR16: Upon confirmation, the system shall remove User and associated workouts
+[FR1: Provide a Main menu allowing users to choose User or Admin mode](https://github.com/wfresch/CS690-FitnessTracker/issues/1)\
+[FR11: For Admin mode, provide a menu to Manage Users or Manage Workout Types](https://github.com/wfresch/CS690-FitnessTracker/issues/16)\
+[FR12: When Manage Users is chosen, provide a menu to Add a User or Remove a User](https://github.com/wfresch/CS690-FitnessTracker/issues/17)\
+[NFR3: If no users exist and Remove a User is chosen, display a message stating that no users exist.](https://github.com/wfresch/CS690-FitnessTracker/issues/21)\
+[FR15: When Remove a User is chosen, provide a menu of existing users](https://github.com/wfresch/CS690-FitnessTracker/issues/22)\
+[NFR4: Before removing a user, prompt Admin with a confirmation message (Are you sure?)](https://github.com/wfresch/CS690-FitnessTracker/issues/23)\
+[FR16: Upon confirmation, the system shall remove User and associated workouts](https://github.com/wfresch/CS690-FitnessTracker/issues/24)
 
 ### Manage Workouts > Manage Movement Workout Types
 #### UC5: Add movement workout
@@ -173,14 +177,17 @@ Flow:
 5. Admin types Movement name
 6. System stores this data
 
-FR1: Provide a Main menu allowing users to choose User or Admin mode\
-FR11: For Admin mode, provide a menu to Manage Users or Manage Workout Types\
-FR17: When Manage Workouts is chosen, provide a menu to Manage Movement Workouts or Manage Weightlifting Workouts\
-FR18: When Manage Movement Workouts is chosen, provide a menu to Add, Rename, or Remove Movement Workouts\
-FR19: When Add Movement Workout is chosen, prompt Admin for name of Movement\
-NFR5: When adding or renaming a Movement Workout with a duplicate name, prompt Admin to use a different name or cancel.\
-FR20: The system shall store Movement Workout data in a persistent way\
-NFR6: A default set of Movement Workouts exist and cannot be modified or removed.  These Movement workouts include: Running, Walking, and Biking
+[FR1: Provide a Main menu allowing users to choose User or Admin mode](https://github.com/wfresch/CS690-FitnessTracker/issues/1)\
+[FR11: For Admin mode, provide a menu to Manage Users or Manage Workout Types](https://github.com/wfresch/CS690-FitnessTracker/issues/16)\
+[FR17: When Manage Workouts is chosen, provide a menu to Manage Movement Workouts or Manage Weightlifting Workouts](https://github.com/wfresch/CS690-FitnessTracker/issues/27)\
+[FR18: When Manage Movement Workouts is chosen, provide a menu to Add, Rename, or Remove Movement Workouts](https://github.com/wfresch/CS690-FitnessTracker/issues/28)\
+[FR19: When Add Movement Workout is chosen, prompt Admin for name of Movement](https://github.com/wfresch/CS690-FitnessTracker/issues/29)\
+[NFR5: When adding or renaming a Movement Workout with a duplicate name, prompt Admin to use a different name or cancel.](https://github.com/wfresch/CS690-FitnessTracker/issues/30)\
+[FR20: The system shall store Movement Workout data in a persistent way](https://github.com/wfresch/CS690-FitnessTracker/issues/31)\
+[NFR6: A default set of Movement Workouts exist and cannot be modified or removed.  These workouts include](https://github.com/wfresch/CS690-FitnessTracker/issues/32):
+* Running
+* Walking
+* Biking
 
 #### UC6: Rename movement workout
 Actor: Admin
@@ -224,7 +231,7 @@ FR22: When Remove Movement Workout is chosen, provide a menu for existing Moveme
 NFR6: A default set of Movement Workouts exist and cannot be modified or removed.  These Movement workouts include: Running, Walking, and Biking\
 NFR7: If no custom Movement workout types exist and Remove Movement Workout is chosen, display a message stating that no custom Movement Workout types exist.\
 NFR8: Before renaming or removing a Movement workout, prompt Admin with a confirmation message (Are you sure?)\
-FR23: Upon confirmation, the system shall remove the Movement workout type and remove all associated workouts\
+FR23: Upon confirmation, the system shall remove the Movement workout type and remove all associated workouts
 
 ### Manage Workouts > Manage Weightlifting Workout Types
 #### UC8: Add weightlifting workout
