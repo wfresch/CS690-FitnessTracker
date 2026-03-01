@@ -4,15 +4,15 @@ namespace FitnessTracker;
 
 public class DataManager {
 
-    FileSaver workoutSaver;
+    // FileSaver workoutSaver;
     FileSaver workoutSubtypeSaver;
 
     public List<WorkoutSubtype> ReservedWorkoutSubtypes { get; }
     public List<WorkoutSubtype> CustomWorkoutSubtypes {get;}
     public List<User> Users { get; }
-    public List<Workout> Workouts {get;}
-    public List<MovementWorkoutDetails> MovementWorkoutDetailList {get; }
-    public List<WeightliftingWorkoutDetails> WeightliftingWorkoutDetailList {get;}
+    // public List<Workout> Workouts {get;}
+    // public List<MovementWorkoutDetails> MovementWorkoutDetailList {get; }
+    // public List<WeightliftingWorkoutDetails> WeightliftingWorkoutDetailList {get;}
 
     public DataManager() {
 
@@ -56,10 +56,18 @@ public class DataManager {
     }
 
     public void SynchronizeUsers() {
-        File.Delete("users.txt");
-        foreach(var user in Users) {
-            File.AppendAllText("users.txt",user.Name+Environment.NewLine);
+        if (Users.Count() > 0)
+        {
+            File.Delete("users.txt");
+            foreach(var user in Users) {
+                File.AppendAllText("users.txt",user.Name+Environment.NewLine);
+            }    
         }
+    }
+
+    public bool UsersExist()
+    {
+        return Users.Count != 0;
     }
 
     public bool AddUser(User user) {
@@ -74,8 +82,9 @@ public class DataManager {
     }
 
     public void RemoveUser(User user) {
+        //TODO: Remove related workouts
         //Workouts.RemoveAll(x => x.User == user.Name);
-        var workoutsToRemove = Workouts.Where(x => x.User == user.Name);
+        //var workoutsToRemove = Workouts.Where(x => x.User == user.Name);
 
 
         Users.Remove(user);

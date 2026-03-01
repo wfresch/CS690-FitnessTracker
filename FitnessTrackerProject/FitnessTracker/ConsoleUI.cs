@@ -60,13 +60,40 @@ public class ConsoleUI {
 
                 if(command=="Add User") {
                     var newUserName = AnsiConsole.Prompt(new TextPrompt<string>("Enter new user name:"));
-                    dataManager.AddUser(new User(newUserName));
+                    if (dataManager.AddUser(new User(newUserName)))
+                    {
+                        var styled = new Text($"New user {newUserName} has been added.", new Style(foreground: Color.Green));
+                        AnsiConsole.Write(styled);
+                    }
+                    else
+                    {
+                        var styled = new Text($"Sorry, user {newUserName} already exists.", new Style(foreground: Color.Red));
+                        AnsiConsole.Write(styled);
+                    }
+                    AnsiConsole.WriteLine();
                 } else if(command=="Remove User") {
-                    User selectedUser = AnsiConsole.Prompt(
+                    if (!dataManager.UsersExist())
+                    {
+                        var styled = new Text("Sorry, no users currently exist.", new Style(foreground: Color.Red));
+                        AnsiConsole.Write(styled);
+                        AnsiConsole.WriteLine();
+                    }
+                    else
+                    {
+                        User selectedUser = AnsiConsole.Prompt(
 				            new SelectionPrompt<User>()
 				                .Title("Select a User")
 				                .AddChoices(dataManager.Users));
-                    dataManager.RemoveUser(selectedUser);
+
+                        var confirm = AnsiConsole.Prompt(new SelectionPrompt<string>()
+                            .Title($"Are you sure you wish to delete {selectedUser.Name}?")
+                            .AddChoices("No","Yes"));
+                        
+                        if (confirm == "Yes")
+                        {
+                            dataManager.RemoveUser(selectedUser);    
+                        }
+                    }
                 }
          } while(command!="back");
     }
