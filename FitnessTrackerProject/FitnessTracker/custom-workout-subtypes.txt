@@ -1,0 +1,2 @@
+Hopping,0
+Dumbbell Curls,1

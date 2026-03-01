@@ -12,26 +12,8 @@ public class User {
     }
 }
 
-// public class WorkoutType {
-//     public string Name { get; }
-
-//     public WorkoutType(string name) {
-//         this.Name = name;
-//     }
-
-//     public override string ToString() {
-//         return this.Name;
-//     }
-// }
-
-public enum WorkoutType {
-    Movement,
-    Weightlifting
-}
-
-
 public class WorkoutSubtype {
-    public string Name { get; }
+    public string Name { get; private set; }
 
     public WorkoutType WorkoutType {get;}
     public bool Reserved {get; }
@@ -41,6 +23,12 @@ public class WorkoutSubtype {
         this.Name = name;
         this.WorkoutType = workoutType;
         this.Reserved = reserved;
+        //Console.WriteLine($"Created a new subtype with type {workoutType}.");
+    }
+
+    public void Rename(string newName)
+    {
+        Name = newName;
     }
 
     public override string ToString() {
@@ -113,3 +101,29 @@ public class Workout
         return $"Date: {WorkoutDate}, {Subtype}";
     }
 }
+
+    #region Enums
+public enum WorkoutType {
+    Movement,
+    Weightlifting
+}
+
+public enum DistanceUnits
+{
+    Miles,
+    Kilometers
+}
+
+public enum TimeUnits
+{
+    Hours,
+    Minutes,
+    Seconds
+}
+
+public enum WeightUnits
+{
+    Pounds,
+    Kilograms
+}
+#endregion
