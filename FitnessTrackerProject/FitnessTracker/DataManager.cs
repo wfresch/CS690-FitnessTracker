@@ -4,61 +4,84 @@ namespace FitnessTracker;
 
 public class DataManager {
 
-    // FileSaver workoutSaver;
-    //FileSaver workoutSubtypeSaver;
-
+    FileSaver mainworkoutSaver;
+    FileSaver movementWorkoutSaver;
+    FileSaver weightliftingWorkoutSaver;
+    
     public List<WorkoutSubtype> ReservedWorkoutSubtypes { get; }
     public List<WorkoutSubtype> CustomWorkoutSubtypes {get;}
-    //public List<WorkoutSubtype> WorkoutSubtypes {get;}
+    
     public List<User> Users { get; }
-    // public List<Workout> Workouts {get;}
-    // public List<MovementWorkoutDetails> MovementWorkoutDetailList {get; }
-    // public List<WeightliftingWorkoutDetails> WeightliftingWorkoutDetailList {get;}
+    public List<Workout> Workouts {get;}
+    public List<MovementWorkoutDetails> MovementWorkoutDetailList {get; }
+    public List<WeightliftingWorkoutDetails> WeightliftingWorkoutDetailList {get;}
     private const int MOVEMENT_WORKOUT_TYPE = 0; 
     private const int WEIGHTLIFTING_WORKOUT_TYPE = 1; 
     
-
     public DataManager() {
 
         // Initialize and Load User Data
         Users = [];
-        TouchFile("users.txt");
-        var usersFileContent = File.ReadAllLines("users.txt");
-
-        foreach(var user in usersFileContent) {
-            Users.Add(new User(user));
-        }
-
+        LoadUserData();
+        
+        // Initialize and Load Workout Types
+        // These workout subtypes will exist regardless of the presence or state of data files
         ReservedWorkoutSubtypes =
         [
-            new("Running", WorkoutType.Movement, true),
-            new ("Walking", WorkoutType.Movement, true),
-            new ("Biking", WorkoutType.Movement, true),
-            new ("Back Squat", WorkoutType.Weightlifting, true),
-            new ("Deadlift", WorkoutType.Weightlifting, true),
-            new ("Bench Press", WorkoutType.Weightlifting, true),
-            new ("Frong Squat", WorkoutType.Weightlifting, true)
+            new(new Guid("4AB3393B-B70E-4125-BD5A-5B2D87F1A282"), "Running", WorkoutType.Movement, true),
+            new(new Guid("C30D9B3B-0833-4F48-9829-8C7CF82E3065"), "Walking", WorkoutType.Movement, true),
+            new(new Guid("4C6AEDBC-0C85-4B53-8EC9-BE5FB16273A1"), "Biking", WorkoutType.Movement, true),
+            new(new Guid("01E60368-3851-401E-A557-9E5589750CE2"), "Back Squat", WorkoutType.Weightlifting, true),
+            new(new Guid("E67A8D8D-334F-40CE-9DFC-FF2FEAB511B7"), "Deadlift", WorkoutType.Weightlifting, true),
+            new(new Guid("F0568158-E80A-4A25-B7F0-B18A22B8FAD6"), "Bench Press", WorkoutType.Weightlifting, true),
+            new(new Guid("4E90E853-1115-4C28-AA1D-1805991EEEE4"), "Front Squat", WorkoutType.Weightlifting, true)
         ];
 
-        //workoutSubtypeSaver = new FileSaver("custom-workout-subtypes.txt");
-
-        //List<WorkoutSubtype> CustomWorkoutSubtypes = [];
         CustomWorkoutSubtypes = [];
-        TouchFile("custom-workout-subtypes.txt");
+        LoadCustomWorkoutTypes();
 
-        var subTypesFromFile = File.ReadAllLines("custom-workout-subtypes.txt");
-        foreach(var subtype in subTypesFromFile)
-        {
-            var splitted = subtype.Split(",",StringSplitOptions.RemoveEmptyEntries);
-            var inputName = splitted[0];
-            var inputType = splitted[1];    
+        mainworkoutSaver = new FileSaver("main-workout-data.txt");
+        movementWorkoutSaver = new FileSaver("movement-workout-data.txt");
+        weightliftingWorkoutSaver = new FileSaver("weightlifting-workout-data.txt");
 
-            var workoutType = Enum.Parse<WorkoutType>(inputType);
+        Workouts = [];
+        MovementWorkoutDetailList = [];
+        WeightliftingWorkoutDetailList = [];
+        
+        var mainWorkoutFileContent = File.ReadAllLines("main-workout-data.txt");
+        foreach(var line in mainWorkoutFileContent) {
+            var splitted = line.Split(",",StringSplitOptions.RemoveEmptyEntries);
+            var workoutId = Guid.Parse(splitted[0]);
+            User workoutUser = GetUser(Guid.Parse(splitted[1]));
+            DateTime workoutDate = DateTime.Parse(splitted[2]);
+            WorkoutSubtype workoutSubtype = GetWorkoutSubtype(Guid.Parse(splitted[3]));
 
-            CustomWorkoutSubtypes.Add(new WorkoutSubtype(inputName, workoutType));
+            Workouts.Add(new Workout(workoutId, workoutUser, workoutDate, workoutSubtype));
         }
 
-        //WorkoutSubtypes = ReservedWorkoutSubtypes.Concat(Custom)
+        var movementWorkoutFileContent = File.ReadAllLines("movement-workout-data.txt");
+        foreach(var line in movementWorkoutFileContent) {
+            var splitted = line.Split(",",StringSplitOptions.RemoveEmptyEntries);
+            var workoutId = Guid.Parse(splitted[0]);
+            var distanceQuantity = int.Parse(splitted[1]);
+            var distanceUnits = splitted[2];
+            var timeQuantity = int.Parse(splitted[3]);
+            var timeUnits = splitted[4];
+
+            MovementWorkoutDetailList.Add(new MovementWorkoutDetails(workoutId, distanceQuantity, distanceUnits, timeQuantity, timeUnits));
+        }
+
+        var weightliftingWorkoutFileContent = File.ReadAllLines("weightlifting-workout-data.txt");
+        foreach(var line in weightliftingWorkoutFileContent) {
+            var splitted = line.Split(",",StringSplitOptions.RemoveEmptyEntries);
+            var workoutId = Guid.Parse(splitted[0]);
+            var weightQuantity = int.Parse(splitted[1]);
+            var weightUnits = splitted[2];
+            var numberOfSets = int.Parse(splitted[3]);
+            var numberOfReps = int.Parse(splitted[4]);
+
+            WeightliftingWorkoutDetailList.Add(new WeightliftingWorkoutDetails(workoutId, weightQuantity, weightUnits, numberOfSets, numberOfReps));
+        }
 
     }
 
@@ -70,6 +93,20 @@ public class DataManager {
     }
 
 #region User methods
+    private void LoadUserData()
+    {
+        TouchFile("users.txt");
+        var usersFileContent = File.ReadAllLines("users.txt");
+
+        foreach(var user in usersFileContent) {
+            var splitted = user.Split(",",StringSplitOptions.RemoveEmptyEntries);
+            var userId = Guid.Parse(splitted[0]);
+            var userName = splitted[1];    
+
+            Users.Add(new User(userName, userId));
+        }
+    }
+
     public void SynchronizeUsers() {
         string fileName = "users.txt";
         File.Delete(fileName);
@@ -81,7 +118,7 @@ public class DataManager {
         else 
         {
             foreach(var user in Users) {
-                File.AppendAllText("users.txt",user.Name+Environment.NewLine);
+                File.AppendAllText("users.txt",$"{user.UserId},{user.Name}{Environment.NewLine}");
             }  
         }
     }
@@ -104,16 +141,37 @@ public class DataManager {
 
     public void RemoveUser(User user) {
         //TODO: Remove related workouts
-        //Workouts.RemoveAll(x => x.User == user.Name);
-        //var workoutsToRemove = Workouts.Where(x => x.User == user.Name);
-
-
+        
         Users.Remove(user);
         SynchronizeUsers();
     }
+
+    public User GetUser(Guid userId)
+    {
+        return Users.FirstOrDefault(x => x.UserId == userId)!;
+    }
+
 #endregion
 
 #region Custom workout methods
+    private void LoadCustomWorkoutTypes()
+    {
+        TouchFile("custom-workout-subtypes.txt");
+
+        var subTypesFromFile = File.ReadAllLines("custom-workout-subtypes.txt");
+        foreach(var subtype in subTypesFromFile)
+        {
+            var splitted = subtype.Split(",",StringSplitOptions.RemoveEmptyEntries);
+            var inputId = Guid.Parse(splitted[0]);
+            var inputName = splitted[1];
+            var inputType = splitted[2];
+
+            var workoutType = Enum.Parse<WorkoutType>(inputType);
+
+            CustomWorkoutSubtypes.Add(new WorkoutSubtype(inputId, inputName, workoutType));
+        }
+    }
+
     public void SynchronizeCustomWorkoutSubtypes() {
         string fileName = "custom-workout-subtypes.txt";
         File.Delete(fileName);
@@ -129,7 +187,7 @@ public class DataManager {
                     ? MOVEMENT_WORKOUT_TYPE
                     : WEIGHTLIFTING_WORKOUT_TYPE;
 
-                File.AppendAllText(fileName, $"{customWorkoutSubtype.Name},{workoutType}{Environment.NewLine}");
+                File.AppendAllText(fileName, $"{customWorkoutSubtype.SubtypeId},{customWorkoutSubtype.Name},{workoutType}{Environment.NewLine}");
             }    
         }
     }
@@ -150,7 +208,6 @@ public class DataManager {
             return false;
         }
 
-        //Console.WriteLine($"Adding a custom workout in DataManager with type {workoutSubtype.WorkoutType}.");
         CustomWorkoutSubtypes.Add(workoutSubtype);
         SynchronizeCustomWorkoutSubtypes();
         return true;
@@ -161,16 +218,11 @@ public class DataManager {
         List<WorkoutSubtype> workoutSubtypes = [];
         workoutSubtypes = [.. ReservedWorkoutSubtypes.Where(x => x.WorkoutType == workoutType)];
 
-        // List<WorkoutSubtype> customWorkoutSubtypes = [];
-        // customWorkoutSubtypes = [.. CustomWorkoutSubtypes.Where(x => x.WorkoutType == workoutType)];
-
         return [.. workoutSubtypes, .. CustomWorkoutSubtypes.Where(x => x.WorkoutType == workoutType)];
     }
 
     public void RenameCustomWorkoutSubtype(WorkoutSubtype workoutSubtype, string newName) {
-        //TODO: What else needs renamed here?
-
-        foreach (var subtype in CustomWorkoutSubtypes.Where(x => x.Name == workoutSubtype.Name))
+        foreach (var subtype in CustomWorkoutSubtypes.Where(x => x.SubtypeId == workoutSubtype.SubtypeId))
         {
             subtype.Rename(newName);
         }
@@ -180,13 +232,49 @@ public class DataManager {
 
     public void RemoveCustomWorkoutSubtype(WorkoutSubtype workoutSubtype) {
         //TODO: Remove related workouts
-        //Workouts.RemoveAll(x => x.User == user.Name);
-        //var workoutsToRemove = Workouts.Where(x => x.User == user.Name);
-
+        
         CustomWorkoutSubtypes.Remove(workoutSubtype);
         SynchronizeCustomWorkoutSubtypes();
     }
+
+    public WorkoutSubtype GetWorkoutSubtype(Guid subtypeId)
+    {
+        if(ReservedWorkoutSubtypes.Any(x => x.SubtypeId == subtypeId))
+        {
+            return ReservedWorkoutSubtypes.FirstOrDefault(x => x.SubtypeId == subtypeId)!;
+        }
+
+        return CustomWorkoutSubtypes.FirstOrDefault(x => x.SubtypeId == subtypeId)!;        
+    }
 #endregion
 
+#region Workout log methods
+    public Guid AddParentWorkoutDetails(User workoutUser, WorkoutSubtype subtype)
+    {
+        var workoutId = Guid.NewGuid();
+        var workoutDate = DateTime.Now;
+
+        var workout = new Workout(workoutId, workoutUser, workoutDate, subtype); 
+        Workouts.Add(workout);
+        mainworkoutSaver.AppendLine(workout.Storage());
+
+        return workoutId;
+    }
+
+    public void AddMovementWorkoutDetails(Guid workoutId, int distanceQuantity, string distanceUnits, int timeQuantity, string timeUnits)
+    {
+        var movementWorkoutDetails = new MovementWorkoutDetails(workoutId, distanceQuantity, distanceUnits, timeQuantity, timeUnits);
+        MovementWorkoutDetailList.Add(movementWorkoutDetails);
+        movementWorkoutSaver.AppendLine(movementWorkoutDetails.Storage());
+    }
+
+    public void AddWeightliftingWorkoutDetails(Guid workoutId, int weightQuantity, string weightUnits, int numberOfSets, int numberOfReps)
+    {
+        var weightliftingWorkoutDetails = new WeightliftingWorkoutDetails(workoutId, weightQuantity, weightUnits, numberOfSets, numberOfReps);
+        WeightliftingWorkoutDetailList.Add(weightliftingWorkoutDetails);
+        weightliftingWorkoutSaver.AppendLine(weightliftingWorkoutDetails.Storage());
+    }
+
+#endregion
 
 }

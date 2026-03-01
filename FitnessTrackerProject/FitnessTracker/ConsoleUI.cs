@@ -5,7 +5,7 @@ using Spectre.Console;
 
 public class ConsoleUI {
     DataManager dataManager;
-    User selectedUser;
+    User? selectedUser;
     //WorkoutSubtype selectedWorkoutSubtype;
 
     public ConsoleUI() {
@@ -257,18 +257,42 @@ public class ConsoleUI {
 
                 timeQuantity = AnsiConsole.Prompt(new TextPrompt<int>($"Please specify the number of {timeUnits}:"));
                 
-                //We have all we need for a MovementWorkoutDetails object
-                //Remember, we also need: WorkoutId, User, WorkoutDate, Subtype
-                // First, create a Workout record, with GUID, user, date, and subtype
-                // Then, create a MovementWorkoutDetails record, tieing back to Workout GUID
-
+                var workoutId = dataManager.AddParentWorkoutDetails(selectedUser!, selectedWorkoutSubtype);
+                dataManager.AddMovementWorkoutDetails(workoutId, distanceQuantity, distanceUnits.ToString(), timeQuantity, timeUnits.ToString());
+                var styled = new Text($"New {selectedWorkoutSubtype.Name} workout has been logged.", new Style(foreground: Color.Green));
+                AnsiConsole.Write(styled);
+                AnsiConsole.WriteLine();
+                command = "back";
             }
-
-
-
-
-            
+            else if (workoutType == WorkoutType.Weightlifting)
+            {
+                int weightQuantity = -1;
+                WeightUnits weightUnits;
+                int numberOfSets = -1;
+                int numberOfReps = -1;
                 
+                var selectedWorkoutSubtype
+                     = AnsiConsole.Prompt(
+				            new SelectionPrompt<WorkoutSubtype>()
+				                .Title("Choose Weightlifting Workout")
+				                .AddChoices(dataManager.GetWorkoutSubTypes(WorkoutType.Weightlifting)));
+
+                weightUnits = AnsiConsole.Prompt(
+                    new SelectionPrompt<WeightUnits>()
+                        .Title("For the weight lifted in this workout, please specify the units of weight:")
+                        .AddChoices(Enum.GetValues<WeightUnits>()));
+
+                weightQuantity = AnsiConsole.Prompt(new TextPrompt<int>($"Please specify the number of {weightUnits}:"));
+                numberOfSets = AnsiConsole.Prompt(new TextPrompt<int>("Please specify the number of sets:"));
+                numberOfReps = AnsiConsole.Prompt(new TextPrompt<int>("Please specify the number of reps:"));
+                
+                var workoutId = dataManager.AddParentWorkoutDetails(selectedUser!, selectedWorkoutSubtype);
+                dataManager.AddWeightliftingWorkoutDetails(workoutId, weightQuantity, weightUnits.ToString(), numberOfSets, numberOfReps);
+                var styled = new Text($"New {selectedWorkoutSubtype.Name} workout has been logged.", new Style(foreground: Color.Green));
+                AnsiConsole.Write(styled);
+                AnsiConsole.WriteLine();
+                command = "back";
+            }
          } while(command!="back");
     }
 

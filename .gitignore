@@ -480,3 +480,10 @@ $RECYCLE.BIN/
 
 # Vim temporary swap files
 *.swp
+
+# Text files used for storage
+main-workout-data.txt
+movement-workout-data.txt
+weightlifting-workout-data.txt
+custom-workout-subtypes.txt
+users.txt

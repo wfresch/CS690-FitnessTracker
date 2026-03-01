@@ -1,9 +1,14 @@
 namespace FitnessTracker;
 
 public class User {
+    public Guid UserId { get; }
     public string Name { get; }
 
-    public User(string name) {
+    public User(string name) : this(name, Guid.NewGuid()) {
+    }
+
+    public User(string name, Guid userId) {
+        this.UserId = userId;
         this.Name = name;
     }
 
@@ -13,17 +18,20 @@ public class User {
 }
 
 public class WorkoutSubtype {
+    public Guid SubtypeId { get; }
     public string Name { get; private set; }
-
     public WorkoutType WorkoutType {get;}
     public bool Reserved {get; }
 
+    public WorkoutSubtype(string name, WorkoutType workoutType, bool reserved=false) 
+    : this(Guid.NewGuid(), name, workoutType, reserved) {
+    }
 
-    public WorkoutSubtype(string name, WorkoutType workoutType, bool reserved=false) {
+    public WorkoutSubtype(Guid subtypeId, string name, WorkoutType workoutType, bool reserved=false) {
+        this.SubtypeId = subtypeId;
         this.Name = name;
         this.WorkoutType = workoutType;
         this.Reserved = reserved;
-        //Console.WriteLine($"Created a new subtype with type {workoutType}.");
     }
 
     public void Rename(string newName)
@@ -56,6 +64,11 @@ public class MovementWorkoutDetails
     public override string ToString() {
         return $"Distance: {DistanceQuantity} {DistanceUnits}, Time: {TimeQuantity} {TimeUnits}";
     }
+
+    public string Storage()
+    {
+        return $"{WorkoutId},{DistanceQuantity},{DistanceUnits},{TimeQuantity},{TimeUnits}";
+    }
 }
 
 public class WeightliftingWorkoutDetails
@@ -78,27 +91,40 @@ public class WeightliftingWorkoutDetails
     public override string ToString() {
         return $"Weight: {WeightQuantity} {WeightUnits}, {NumberOfSets} sets of {NumberOfReps}";
     }
+
+    public string Storage()
+    {
+        return $"{WorkoutId},{WeightQuantity},{WeightUnits},{NumberOfSets},{NumberOfReps}";
+    }
 }
 
 public class Workout
 {
     public Guid WorkoutId {get;}
 
-    public string User {get; }
+    public User WorkoutUser {get; }
 
     public DateTime WorkoutDate {get;}
 
     public WorkoutSubtype Subtype {get;}    
 
-    public Workout(string user, DateTime workoutDate, WorkoutSubtype subtype) {
-        this.WorkoutId = Guid.NewGuid();
-        this.User = user;
+    public Workout(User workoutUser, DateTime workoutDate, WorkoutSubtype subtype) : this(Guid.NewGuid(), workoutUser, workoutDate, subtype) {
+    }
+
+    public Workout(Guid workoutId, User workoutUser, DateTime workoutDate, WorkoutSubtype subtype) {
+        this.WorkoutId = workoutId;
+        this.WorkoutUser = workoutUser;
         this.WorkoutDate = workoutDate;
         this.Subtype = subtype;
     }
 
     public override string ToString() {
-        return $"Date: {WorkoutDate}, {Subtype}";
+        return $"Date: {WorkoutDate}, {Subtype.Name}";
+    }
+
+    public string Storage()
+    {
+        return $"{WorkoutId},{WorkoutUser.UserId},{WorkoutDate},{Subtype.SubtypeId}";
     }
 }
 
