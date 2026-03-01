@@ -12,73 +12,155 @@ public class ConsoleUI {
         dataManager = new DataManager();
     }
 
-    public void Show() {
+    // public void Show() {
         
-        var mode = AnsiConsole.Prompt(
-				            new SelectionPrompt<string>()
-				                .Title("Main Menu")
-				                .AddChoices(new[] {
-				                    "User Mode","Admin Mode"
-				                }));
+    //     var mode = AnsiConsole.Prompt(
+	// 			            new SelectionPrompt<string>()
+	// 			                .Title("Main Menu")
+	// 			                .AddChoices(new[] {
+	// 			                    "User Mode","Admin Mode"
+	// 			                }));
 
-        if (mode == "Admin Mode")
-        {
-            string command;
+    //     if (mode == "Admin Mode")
+    //     {
+    //         string command;
 
-            do {
+    //         do {
                 
-                command = AnsiConsole.Prompt(
-				                    new SelectionPrompt<string>()
-				                        .Title("Admin Options")
-				                        .AddChoices(new[] {
-				                            "Manage Users", "Manage Workout Types", "end"
-				                        }));
+    //             command = AnsiConsole.Prompt(
+	// 			                    new SelectionPrompt<string>()
+	// 			                        .Title("Admin Options")
+	// 			                        .AddChoices(new[] {
+	// 			                            "Manage Users", "Manage Workout Types", "end"
+	// 			                        }));
 
-                if(command=="Manage Users") {
-                    ShowAdminUserOptions();
-                }
-                else if(command=="Manage Workout Types") {
-                    ShowAdminWorkoutOptions();
-                }
+    //             if(command=="Manage Users") {
+    //                 ShowAdminUserOptions();
+    //             }
+    //             else if(command=="Manage Workout Types") {
+    //                 ShowAdminWorkoutOptions();
+    //             }
 
-            } while(command!="end");
+    //         } while(command!="end");
 
-        }
-        else if (mode == "User Mode")
+    //     }
+    //     else if (mode == "User Mode")
+    //     {
+    //         if (!dataManager.UsersExist())
+    //         {
+    //             var styled = new Text("Sorry, no users currently exist.", new Style(foreground: Color.Red));
+    //             AnsiConsole.Write(styled);
+    //             AnsiConsole.WriteLine();
+    //         }
+    //         else {
+    //             selectedUser
+    //                  = AnsiConsole.Prompt(
+	// 			            new SelectionPrompt<User>()
+	// 			                .Title("Select a User")
+	// 			                .AddChoices(dataManager.Users));
+
+    //             string command;
+
+    //             do
+    //             {
+    //                 command = AnsiConsole.Prompt(
+    //                                     new SelectionPrompt<string>()
+    //                                         .Title("User Options")
+    //                                         .AddChoices(new[] {
+    //                                             "Log Workout", "View Stats", "end"
+    //                                         }));
+    //                 if(command=="Log Workout") {
+    //                     ShowLogWorkoutOptions();
+    //                 }
+    //                 else if(command=="View Stats") {
+    //                     ShowViewStatsOptions();
+    //                 }
+
+    //             } while(command!="end");
+    //         }
+    //     }
+    // }
+
+    public void Show()
+    {
+        string mode;
+
+        do
         {
-            if (!dataManager.UsersExist())
+            mode = AnsiConsole.Prompt(
+                new SelectionPrompt<string>()
+                    .Title("Main Menu")
+                    .AddChoices(new[] {
+                        "User Mode","Admin Mode","Exit"
+                    }));
+
+            if (mode == "Admin Mode")
             {
-                var styled = new Text("Sorry, no users currently exist.", new Style(foreground: Color.Red));
-                AnsiConsole.Write(styled);
-                AnsiConsole.WriteLine();
+                ShowAdminMode();
             }
-            else {
-                selectedUser
-                     = AnsiConsole.Prompt(
-				            new SelectionPrompt<User>()
-				                .Title("Select a User")
-				                .AddChoices(dataManager.Users));
-
-                string command;
-
-                do
-                {
-                    command = AnsiConsole.Prompt(
-                                        new SelectionPrompt<string>()
-                                            .Title("User Options")
-                                            .AddChoices(new[] {
-                                                "Log Workout", "View Stats", "end"
-                                            }));
-                    if(command=="Log Workout") {
-                        ShowLogWorkoutOptions();
-                    }
-                    else if(command=="View Stats") {
-                        ShowViewStatsOptions();
-                    }
-
-                } while(command!="end");
+            else if (mode == "User Mode")
+            {
+                ShowUserMode();
             }
+
+        } while (mode != "Exit");
+    }
+
+    private void ShowAdminMode()
+    {
+        string command;
+
+        do
+        {
+            command = AnsiConsole.Prompt(
+                new SelectionPrompt<string>()
+                    .Title("Admin Options")
+                    .AddChoices(new[] {
+                        "Manage Users", "Manage Workout Types", "back"
+                    }));
+
+            if (command == "Manage Users")
+                ShowAdminUserOptions();
+            else if (command == "Manage Workout Types")
+                ShowAdminWorkoutOptions();
+
+        } while (command != "back");
+    }
+
+    private void ShowUserMode()
+    {
+        if (!dataManager.UsersExist())
+        {
+            var styled = new Text("Sorry, no users currently exist.", new Style(foreground: Color.Red));
+            AnsiConsole.Write(styled);
+            AnsiConsole.WriteLine();
+            AnsiConsole.MarkupLine("[grey]Press any key to return to main menu...[/]");
+            Console.ReadKey();
+            return;
         }
+
+        selectedUser = AnsiConsole.Prompt(
+            new SelectionPrompt<User>()
+                .Title("Select a User")
+                .AddChoices(dataManager.Users));
+
+        string command;
+
+        do
+        {
+            command = AnsiConsole.Prompt(
+                new SelectionPrompt<string>()
+                    .Title("User Options")
+                    .AddChoices(new[] {
+                        "Log Workout", "View Stats", "back"
+                    }));
+
+            if (command == "Log Workout")
+                ShowLogWorkoutOptions();
+            else if (command == "View Stats")
+                ShowViewStatsOptions();
+
+        } while (command != "back");
     }
 
     public void ShowAdminUserOptions()
