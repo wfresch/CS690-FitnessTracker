@@ -73,7 +73,7 @@ public class ConsoleUI {
                         ShowLogWorkoutOptions();
                     }
                     else if(command=="View Stats") {
-                        //ShowViewStatsOptions();
+                        ShowViewStatsOptions();
                     }
 
                 } while(command!="end");
@@ -293,6 +293,58 @@ public class ConsoleUI {
                 AnsiConsole.WriteLine();
                 command = "back";
             }
+         } while(command!="back");
+    }
+
+    public void ShowViewStatsOptions()
+    {    
+        string command = "";
+
+        do {
+
+            string timespan = AnsiConsole.Prompt(
+				                    new SelectionPrompt<string>()
+				                        .Title("Manage Users")
+				                        .AddChoices(new[] {
+				                            "Last 7 Days", "Last 30 Days", "Last 365 Days", "back"
+				                        }));
+
+            var startDate = DateTime.MinValue;
+            var endDate = DateTime.Now;
+            if (timespan == "Last 7 Days")
+            {
+                startDate = endDate.AddDays(-7);
+            }
+            else if (timespan == "Last 30 Days")
+            {
+                startDate = endDate.AddDays(-30);
+            }
+            else if (timespan == "Last 365 Days")
+            {
+                startDate = endDate.AddDays(-365);
+            }
+
+            var workoutResults = dataManager.GetWorkoutReport(selectedUser!, startDate, endDate);
+            if (workoutResults.Count == 0)
+            {
+                var styled = new Text("There are no workouts that match this timeframe", new Style(foreground: Color.Red));
+                AnsiConsole.Write(styled);
+                AnsiConsole.WriteLine();
+                command = "back";
+            }
+            else
+            {
+                var table = new Table();
+
+                table.AddColumn("Workout Details");
+
+                foreach(var workoutResult in workoutResults) {
+                    table.AddRow(workoutResult);
+                }
+                AnsiConsole.Write(table);
+                command = "back";
+            }
+                        
          } while(command!="back");
     }
 

@@ -152,4 +152,12 @@ public enum WeightUnits
     Pounds,
     Kilograms
 }
+
+// public enum TimeSpan
+// {
+//     Last7Days,
+//     Last30Days,
+//     Last365Days
+// }
+
 #endregion

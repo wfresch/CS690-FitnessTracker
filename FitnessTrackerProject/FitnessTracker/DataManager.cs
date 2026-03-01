@@ -275,6 +275,40 @@ public class DataManager {
         weightliftingWorkoutSaver.AppendLine(weightliftingWorkoutDetails.Storage());
     }
 
+    #endregion
+
+    #region Workout reporting methods
+    public List<string> GetWorkoutReport(User workoutUser, DateTime startDate) => this.GetWorkoutReport(workoutUser, startDate, DateTime.Now);
+
+    public List<string> GetWorkoutReport(User workoutUser, DateTime startDate, DateTime endDate)
+    {
+        List<string> workoutReport = [];
+        var userWorkouts = Workouts.Where(x => x.WorkoutUser == workoutUser && x.WorkoutDate >= startDate && x.WorkoutDate <= endDate);
+
+        foreach(var userWorkout in userWorkouts)
+        {
+            var parentWorkoutDetails = userWorkout.ToString();
+
+            if (MovementWorkoutDetailList.Any(x => x.WorkoutId == userWorkout.WorkoutId))
+            {
+                var movementWorkoutDetails = MovementWorkoutDetailList.FirstOrDefault(x => x.WorkoutId == userWorkout.WorkoutId);
+                var workoutDetails = $"{parentWorkoutDetails}, {movementWorkoutDetails}";
+                workoutReport.Add(workoutDetails);
+                continue;
+            }
+
+            if (WeightliftingWorkoutDetailList.Any(x => x.WorkoutId == userWorkout.WorkoutId))
+            {
+                var weightliftingWorkoutDetails = WeightliftingWorkoutDetailList.FirstOrDefault(x => x.WorkoutId == userWorkout.WorkoutId);
+                var workoutDetails = $"{parentWorkoutDetails}, {weightliftingWorkoutDetails}";
+                workoutReport.Add(workoutDetails);
+                continue;
+            }
+        }
+
+        return workoutReport;
+    }
+
 #endregion
 
 }
