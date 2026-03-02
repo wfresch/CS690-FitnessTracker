@@ -6,80 +6,10 @@ using Spectre.Console;
 public class ConsoleUI {
     DataManager dataManager;
     User? selectedUser;
-    //WorkoutSubtype selectedWorkoutSubtype;
-
+    
     public ConsoleUI() {
         dataManager = new DataManager();
     }
-
-    // public void Show() {
-        
-    //     var mode = AnsiConsole.Prompt(
-	// 			            new SelectionPrompt<string>()
-	// 			                .Title("Main Menu")
-	// 			                .AddChoices(new[] {
-	// 			                    "User Mode","Admin Mode"
-	// 			                }));
-
-    //     if (mode == "Admin Mode")
-    //     {
-    //         string command;
-
-    //         do {
-                
-    //             command = AnsiConsole.Prompt(
-	// 			                    new SelectionPrompt<string>()
-	// 			                        .Title("Admin Options")
-	// 			                        .AddChoices(new[] {
-	// 			                            "Manage Users", "Manage Workout Types", "end"
-	// 			                        }));
-
-    //             if(command=="Manage Users") {
-    //                 ShowAdminUserOptions();
-    //             }
-    //             else if(command=="Manage Workout Types") {
-    //                 ShowAdminWorkoutOptions();
-    //             }
-
-    //         } while(command!="end");
-
-    //     }
-    //     else if (mode == "User Mode")
-    //     {
-    //         if (!dataManager.UsersExist())
-    //         {
-    //             var styled = new Text("Sorry, no users currently exist.", new Style(foreground: Color.Red));
-    //             AnsiConsole.Write(styled);
-    //             AnsiConsole.WriteLine();
-    //         }
-    //         else {
-    //             selectedUser
-    //                  = AnsiConsole.Prompt(
-	// 			            new SelectionPrompt<User>()
-	// 			                .Title("Select a User")
-	// 			                .AddChoices(dataManager.Users));
-
-    //             string command;
-
-    //             do
-    //             {
-    //                 command = AnsiConsole.Prompt(
-    //                                     new SelectionPrompt<string>()
-    //                                         .Title("User Options")
-    //                                         .AddChoices(new[] {
-    //                                             "Log Workout", "View Stats", "end"
-    //                                         }));
-    //                 if(command=="Log Workout") {
-    //                     ShowLogWorkoutOptions();
-    //                 }
-    //                 else if(command=="View Stats") {
-    //                     ShowViewStatsOptions();
-    //                 }
-
-    //             } while(command!="end");
-    //         }
-    //     }
-    // }
 
     public void Show()
     {
@@ -131,9 +61,7 @@ public class ConsoleUI {
     {
         if (!dataManager.UsersExist())
         {
-            var styled = new Text("Sorry, no users currently exist.", new Style(foreground: Color.Red));
-            AnsiConsole.Write(styled);
-            AnsiConsole.WriteLine();
+            RenderStyledMessage("Sorry, no users currently exist.", Color.Red);
             AnsiConsole.MarkupLine("[grey]Press any key to return to main menu...[/]");
             Console.ReadKey();
             return;
@@ -163,7 +91,7 @@ public class ConsoleUI {
         } while (command != "back");
     }
 
-    public void ShowAdminUserOptions()
+    private void ShowAdminUserOptions()
     {    
         string command;
 
@@ -179,21 +107,16 @@ public class ConsoleUI {
                 var newUserName = AnsiConsole.Prompt(new TextPrompt<string>("Enter new user name:"));
                 if (dataManager.AddUser(new User(newUserName)))
                 {
-                    var styled = new Text($"New user {newUserName} has been added.", new Style(foreground: Color.Green));
-                    AnsiConsole.Write(styled);
+                    RenderStyledMessage($"New user {newUserName} has been added.", Color.Green);
                 }
                 else
                 {
-                    var styled = new Text($"Sorry, user {newUserName} already exists.", new Style(foreground: Color.Red));
-                    AnsiConsole.Write(styled);
+                    RenderStyledMessage($"Sorry, user {newUserName} already exists.", Color.Red);
                 }
-                AnsiConsole.WriteLine();
             } else if(command=="Remove User") {
                 if (!dataManager.UsersExist())
                 {
-                    var styled = new Text("Sorry, no users currently exist.", new Style(foreground: Color.Red));
-                    AnsiConsole.Write(styled);
-                    AnsiConsole.WriteLine();
+                    RenderStyledMessage("Sorry, no users currently exist.", Color.Red);
                 }
                 else
                 {
@@ -208,14 +131,15 @@ public class ConsoleUI {
                     
                     if (confirm == "Yes")
                     {
-                        dataManager.RemoveUser(selectedUser);    
+                        dataManager.RemoveUser(selectedUser);  
+                        RenderStyledMessage($"Deleted user {selectedUser.Name}", Color.Green);  
                     }
                 }
             }
          } while(command!="back");
     }
 
-    public void ShowAdminWorkoutOptions()
+    private void ShowAdminWorkoutOptions()
     {    
         string command;
 
@@ -239,21 +163,16 @@ public class ConsoleUI {
 
                 if (dataManager.AddCustomWorkoutSubtype(new WorkoutSubtype(newWorkoutSubtypeName, workoutType)))
                 {
-                    var styled = new Text($"New workout subtype {newWorkoutSubtypeName} has been added.", new Style(foreground: Color.Green));
-                    AnsiConsole.Write(styled);
+                    RenderStyledMessage($"New workout subtype {newWorkoutSubtypeName} has been added.", Color.Green);
                 }
                 else
                 {
-                    var styled = new Text($"Sorry, workout subtype {newWorkoutSubtypeName} already exists.", new Style(foreground: Color.Red));
-                    AnsiConsole.Write(styled);
+                    RenderStyledMessage($"Sorry, workout subtype {newWorkoutSubtypeName} already exists.", Color.Red);
                 }
-                AnsiConsole.WriteLine();
             } else if(command=="Remove Workout Subtype") {
                 if (!dataManager.CustomWorkoutSubtypesExist())
                 {
-                    var styled = new Text("Sorry, no custom workout subtypes currently exist.", new Style(foreground: Color.Red));
-                    AnsiConsole.Write(styled);
-                    AnsiConsole.WriteLine();
+                    RenderStyledMessage("Sorry, no custom workout subtypes currently exist.", Color.Red);
                 }
                 else
                 {
@@ -268,15 +187,14 @@ public class ConsoleUI {
                     
                     if (confirm == "Yes")
                     {
-                        dataManager.RemoveCustomWorkoutSubtype(selectedWorkoutSubtype);    
+                        dataManager.RemoveCustomWorkoutSubtype(selectedWorkoutSubtype);  
+                        RenderStyledMessage($"Removed workout type {selectedWorkoutSubtype}", Color.Green);    
                     }
                 }
             } else if(command=="Rename Workout Subtype") {
                 if (!dataManager.CustomWorkoutSubtypesExist())
                 {
-                    var styled = new Text("Sorry, no custom workout subtypes currently exist.", new Style(foreground: Color.Red));
-                    AnsiConsole.Write(styled);
-                    AnsiConsole.WriteLine();
+                    RenderStyledMessage("Sorry, no custom workout subtypes currently exist.", Color.Red);
                 }
                 else
                 {
@@ -285,15 +203,17 @@ public class ConsoleUI {
                             .Title("Select a custom workout subtype:")
                             .AddChoices(dataManager.CustomWorkoutSubtypes));
 
+                    var oldWorkoutSubtypeName = selectedWorkoutSubtype.Name;
                     var newWorkoutSubtypeName = AnsiConsole.Prompt(new TextPrompt<string>("Enter new workout name:"));
 
                     var confirm = AnsiConsole.Prompt(new SelectionPrompt<string>()
-                        .Title($"Are you sure you wish to rename {selectedWorkoutSubtype.Name} to {newWorkoutSubtypeName}?")
+                        .Title($"Are you sure you wish to rename {oldWorkoutSubtypeName} to {newWorkoutSubtypeName}?")
                         .AddChoices("No","Yes"));
                     
                     if (confirm == "Yes")
                     {
                         dataManager.RenameCustomWorkoutSubtype(selectedWorkoutSubtype, newWorkoutSubtypeName);
+                        RenderStyledMessage($"Renamed workout {oldWorkoutSubtypeName} to {newWorkoutSubtypeName}", Color.Green);  
                     }
                 }
             }
@@ -301,7 +221,7 @@ public class ConsoleUI {
          } while(command!="back");
     }
 
-    public void ShowLogWorkoutOptions()
+    private void ShowLogWorkoutOptions()
     {    
         string command = "";
 
@@ -341,9 +261,7 @@ public class ConsoleUI {
                 
                 var workoutId = dataManager.AddParentWorkoutDetails(selectedUser!, selectedWorkoutSubtype);
                 dataManager.AddMovementWorkoutDetails(workoutId, distanceQuantity, distanceUnits.ToString(), timeQuantity, timeUnits.ToString());
-                var styled = new Text($"New {selectedWorkoutSubtype.Name} workout has been logged.", new Style(foreground: Color.Green));
-                AnsiConsole.Write(styled);
-                AnsiConsole.WriteLine();
+                RenderStyledMessage($"New {selectedWorkoutSubtype.Name} workout has been logged.", Color.Green);
                 command = "back";
             }
             else if (workoutType == WorkoutType.Weightlifting)
@@ -370,15 +288,13 @@ public class ConsoleUI {
                 
                 var workoutId = dataManager.AddParentWorkoutDetails(selectedUser!, selectedWorkoutSubtype);
                 dataManager.AddWeightliftingWorkoutDetails(workoutId, weightQuantity, weightUnits.ToString(), numberOfSets, numberOfReps);
-                var styled = new Text($"New {selectedWorkoutSubtype.Name} workout has been logged.", new Style(foreground: Color.Green));
-                AnsiConsole.Write(styled);
-                AnsiConsole.WriteLine();
+                RenderStyledMessage($"New {selectedWorkoutSubtype.Name} workout has been logged.", Color.Green);
                 command = "back";
             }
          } while(command!="back");
     }
 
-    public void ShowViewStatsOptions()
+    private void ShowViewStatsOptions()
     {    
         string command = "";
 
@@ -409,9 +325,7 @@ public class ConsoleUI {
             var workoutResults = dataManager.GetWorkoutReport(selectedUser!, startDate, endDate);
             if (workoutResults.Count == 0)
             {
-                var styled = new Text("There are no workouts that match this timeframe", new Style(foreground: Color.Red));
-                AnsiConsole.Write(styled);
-                AnsiConsole.WriteLine();
+                RenderStyledMessage("There are no workouts that match this timeframe", Color.Red);
                 command = "back";
             }
             else
@@ -430,5 +344,11 @@ public class ConsoleUI {
          } while(command!="back");
     }
 
+    private void RenderStyledMessage(string message, Color color)
+    {
+        var styled = new Text(message, new Style(foreground: color));
+        AnsiConsole.Write(styled);
+        AnsiConsole.WriteLine();
+    }
 
 }
