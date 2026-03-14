@@ -278,11 +278,11 @@ public class DataManager {
     #endregion
 
     #region Workout reporting methods
-    public List<string> GetWorkoutReport(User workoutUser, DateTime startDate) => this.GetWorkoutReport(workoutUser, startDate, DateTime.Now);
+    public List<string> GetWorkoutData(User workoutUser, DateTime startDate) => this.GetWorkoutData(workoutUser, startDate, DateTime.Now);
 
-    public List<string> GetWorkoutReport(User workoutUser, DateTime startDate, DateTime endDate)
+    public List<string> GetWorkoutData(User workoutUser, DateTime startDate, DateTime endDate)
     {
-        List<string> workoutReport = [];
+        List<string> workoutData = [];
         var userWorkouts = Workouts.Where(x => x.WorkoutUser == workoutUser && x.WorkoutDate >= startDate && x.WorkoutDate <= endDate);
 
         foreach(var userWorkout in userWorkouts)
@@ -293,7 +293,7 @@ public class DataManager {
             {
                 var movementWorkoutDetails = MovementWorkoutDetailList.FirstOrDefault(x => x.WorkoutId == userWorkout.WorkoutId);
                 var workoutDetails = $"{parentWorkoutDetails}, {movementWorkoutDetails}";
-                workoutReport.Add(workoutDetails);
+                workoutData.Add(workoutDetails);
                 continue;
             }
 
@@ -301,12 +301,12 @@ public class DataManager {
             {
                 var weightliftingWorkoutDetails = WeightliftingWorkoutDetailList.FirstOrDefault(x => x.WorkoutId == userWorkout.WorkoutId);
                 var workoutDetails = $"{parentWorkoutDetails}, {weightliftingWorkoutDetails}";
-                workoutReport.Add(workoutDetails);
+                workoutData.Add(workoutDetails);
                 continue;
             }
         }
 
-        return workoutReport;
+        return workoutData;
     }
 
 #endregion

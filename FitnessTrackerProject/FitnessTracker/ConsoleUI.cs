@@ -322,7 +322,7 @@ public class ConsoleUI {
                 startDate = endDate.AddDays(-365);
             }
 
-            var workoutResults = dataManager.GetWorkoutReport(selectedUser!, startDate, endDate);
+            var workoutResults = dataManager.GetWorkoutData(selectedUser!, startDate, endDate);
             if (workoutResults.Count == 0)
             {
                 RenderStyledMessage("There are no workouts that match this timeframe", Color.Red);
@@ -330,14 +330,7 @@ public class ConsoleUI {
             }
             else
             {
-                var table = new Table();
-
-                table.AddColumn("Workout Details");
-
-                foreach(var workoutResult in workoutResults) {
-                    table.AddRow(workoutResult);
-                }
-                AnsiConsole.Write(table);
+                AnsiConsole.Write(Reporter.DisplayWorkoutReport(workoutResults));
                 command = "back";
             }
                         
