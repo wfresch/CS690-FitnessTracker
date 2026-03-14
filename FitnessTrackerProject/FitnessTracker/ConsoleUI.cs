@@ -61,7 +61,7 @@ public class ConsoleUI {
     {
         if (!dataManager.UsersExist())
         {
-            RenderStyledMessage("Sorry, no users currently exist.", Color.Red);
+            RenderStyledMessage("Sorry, no users currently exist. Please create a user in Admin mode.", Color.Red);
             AnsiConsole.MarkupLine("[grey]Press any key to return to main menu...[/]");
             Console.ReadKey();
             return;
@@ -116,7 +116,7 @@ public class ConsoleUI {
             } else if(command=="Remove User") {
                 if (!dataManager.UsersExist())
                 {
-                    RenderStyledMessage("Sorry, no users currently exist.", Color.Red);
+                    RenderStyledMessage("Sorry, no users currently exist. Please create a user in Admin mode.", Color.Red);
                 }
                 else
                 {
