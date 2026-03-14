@@ -22,7 +22,7 @@ public class FileSaverTests
     }
 
     [Fact]
-    public void Test_FileSaver_AppendData()
+    public void Test_FileSaver_AppendLine()
     {
         var sampleGUID = Guid.NewGuid();
         User sampleUser = new("TestUser", sampleGUID);

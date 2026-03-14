@@ -16,7 +16,12 @@ public class FileSaver {
         File.AppendAllText(this.fileName, line + Environment.NewLine);
     }
 
-    // public void AppendData(PassengerData data) {
-    //     File.AppendAllText(this.fileName, data.Driver + ":" + data.Loop + ":" + data.Stop + ":" + data.Boarded + Environment.NewLine);
-    // }
+    // This method is primarily used to validate lines inserted by unit tests
+    public string GetLineDetails(string searchText)
+    {
+        var lineDetails = File.ReadLines(fileName).FirstOrDefault(x => x.StartsWith(searchText));
+        
+        return lineDetails ?? "";
+    }
+
 }

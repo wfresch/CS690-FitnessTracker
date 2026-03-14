@@ -275,6 +275,17 @@ public class DataManager {
         weightliftingWorkoutSaver.AppendLine(weightliftingWorkoutDetails.Storage());
     }
 
+    public bool GetMovementWorkoutDetails(Guid workoutId, out string workoutDetails)
+    {
+        workoutDetails = movementWorkoutSaver.GetLineDetails(workoutId.ToString());
+        return !string.IsNullOrEmpty(workoutDetails);
+    }
+
+    public bool GetWeightliftingWorkoutDetails(Guid workoutId, out string workoutDetails)
+    {
+        workoutDetails = weightliftingWorkoutSaver.GetLineDetails(workoutId.ToString());
+        return !string.IsNullOrEmpty(workoutDetails);
+    }
     #endregion
 
     #region Workout reporting methods

@@ -487,3 +487,6 @@ movement-workout-data.txt
 weightlifting-workout-data.txt
 custom-workout-subtypes.txt
 users.txt
+
+# Coverage files
+FitnessTrackerProject/FitnessTracker.Tests/cobertura/
