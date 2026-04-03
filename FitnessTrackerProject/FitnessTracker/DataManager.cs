@@ -140,8 +140,6 @@ public class DataManager {
     }
 
     public void RemoveUser(User user) {
-        //TODO: Remove related workouts
-        
         Users.Remove(user);
         SynchronizeUsers();
     }
@@ -231,8 +229,6 @@ public class DataManager {
     }
 
     public void RemoveCustomWorkoutSubtype(WorkoutSubtype workoutSubtype) {
-        //TODO: Remove related workouts
-        
         CustomWorkoutSubtypes.Remove(workoutSubtype);
         SynchronizeCustomWorkoutSubtypes();
     }

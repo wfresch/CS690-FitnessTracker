@@ -14,7 +14,7 @@ public class FileSaverTests
     }
 
     [Fact]
-    public void Test_FileSaver_Append()
+    public void Test_FileSaver_AppendGeneral()
     {
         fileSaver.AppendLine("Hello, World!");
         var contentFromFile = File.ReadAllText(testFileName);
@@ -22,7 +22,7 @@ public class FileSaverTests
     }
 
     [Fact]
-    public void Test_FileSaver_AppendLine()
+    public void Test_FileSaver_AppendWorkout()
     {
         var sampleGUID = Guid.NewGuid();
         User sampleUser = new("TestUser", sampleGUID);
